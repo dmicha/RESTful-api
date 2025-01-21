@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GET/POST Client</title>
+</head>
+<style>
+    .columns {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    @media (min-width: 48em) {
+        .columns {
+            flex-wrap: nowrap;
+            width: 20px;
+
+        }
+    }
+
+    button,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"] {
+        background-color: #04aa6d;
+        border: none;
+        width: 180px;
+        height: 50px;
+        color: white;
+        padding: 16px 32px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>
+<script>
+    function get() {
+        const get = new XMLHttpRequest();
+        get.onload = function () {
+            document.getElementById("all").innerHTML =
+                this.responseText;
+        }
+        get.open("GET", "http://10.11.0.1/ndev/Damian/RESTful/Client/stream-context-create.php");
+        get.send(document.getElementById("get_miejsce_dostawy").value);
+    }
+</script>
+<script>
+    function getSingle() {
+        const get = new XMLHttpRequest();
+        get.onload = function () {
+            document.getElementById("single").innerHTML =
+                this.responseText;
+        }
+        get.open("GET", "http://10.11.0.1/ndev/Damian/RESTful/location/" + document.getElementById("get_miejsce_dostawy").value + "/");
+        get.send();
+    }
+</script>
+<script>
+    function deleteLocation() {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            document.getElementById("delete").innerHTML =
+                this.responseText;
+        }
+        xhttp.open("DELETE", "http://10.11.0.1/ndev/Damian/RESTful/location/" + document.getElementById("delete_miejsce_dostawy").value + "/");
+        xhttp.send();
+    }
+</script>
+<script>
+    function ajaxPost() {
+
+        var form = document.getElementById("myForm");
+        var data = new FormData(form);
+
+        fetch("http://10.11.0.1/ndev/Damian/RESTful/Client/stream-context-create.php", {
+            method: "post",
+            body: data
+        })
+            .then((res) => { return res.text(); })
+            .then((txt) => { console.log(txt); })
+            .catch((err) => { console.log(err); });
+
+        document.myForm.submitBtn.value = 'Object added!';
+        document.myForm.submitBtn.style = 'background-color:#76bfe7';
+
+        return false;
+    }
+</script>
+
+<body>
+    <div class="columns">
+        <div class="column">
+            <button type="button" onclick="get()">GET all location</button>
+            <div id="all"></div>
+        </div>
+        <div class="column">
+            <button type="button" onclick="getSingle()">GET single location</button>
+            <input type="text" required name="single" id="get_miejsce_dostawy">
+            <div id="single"></div>
+        </div>
+        <div class="column">
+            <button type="button" onclick="deleteLocation()">Delete location</button>
+            <input type="text" required name="delete" id="delete_miejsce_dostawy">
+            <div id="delete"></div>
+        </div>
+        <div class="column">
+            <form id="myForm" name="myForm" onsubmit="ajaxPost()">
+
+                <input type="submit" id="submitBtn" sname="submitBtn" value="Add location" />
+
+                <input type="number" required name="miejsce_dostawy" id="miejsce_dostawy"
+                    placeholder="miejsce_dostawy" />
+                <input type="text" name="id" id="id" placeholder="id" />
+                <input type="text" name="kod_dostawcy" id="kod_dostawcy" placeholder="kod_dostawcy" />
+                <input type="text" name="kod_oddzialu" id="kod_oddzialu" placeholder="kod_oddzialu" />
+                <input type="text" name="nr_psd" id="nr_psd" placeholder="nr_psd" />
+                <input type="text" name="stanowisko" id="stanowisko" placeholder="stanowisko" />
+                <input type="text" name="wyswietlacz" id="wyswietlacz" placeholder="wyswietlacz" />
+                <input type="text" name="rejon" id="rejon" placeholder="rejon" />
+                <input type="text" name="polka" id="polka" placeholder="polka" />
+                <input type="text" name="opis" id="opis" placeholder="opis" />
+                <input type="text" name="lokalizacja" id="lokalizacja" placeholder="lokalizacja" />
+                <input type="text" name="marka" id="marka" placeholder="marka" />
+                <input type="text" name="cecha_3" id="cecha_3" placeholder="cecha_3" />
+                <input type="text" name="kod_pocztowy" id="kod_pocztowy" placeholder="kod_pocztowy" />
+                <input type="text" name="miasto" id="miasto" placeholder="miasto" />
+                <input type="text" name="ulica" id="ulica" placeholder="ulica" />
+                <input type="text" name="numer" id="numer" placeholder="numer" />
+                <input type="text" name="status" id="status" placeholder="status" />
+                <input type="text" name="id_user" id="id_user" placeholder="id_user" />
+                <input type="text" name="dtm" id="dtm" placeholder="dtm" />
+                <input type="text" name="dostawa_w_sobote" id="dostawa_w_sobote" placeholder="dostawa_w_sobote" />
+                <input type="text" name="id_wlasciciel" id="id_wlasciciel" placeholder="id_wlasciciel" />
+                <input type="text" name="is_book" id="is_book" placeholder="is_book" />
+                <input type="text" name="is_cmp" id="is_cmp" placeholder="is_cmp" />
+                <input type="text" name="is_prasa" id="is_prasa" placeholder="is_prasa" />
+                <input type="text" name="nr_trasy" id="nr_trasy" placeholder="nr_trasy" />
+                <input type="text" name="synchro" id="synchro" placeholder="synchro" />
+            </form>
+        </div>
+    </div>
+    <h1 onload="ajaxPost()"></h1>
+</body>
+
+</html>
